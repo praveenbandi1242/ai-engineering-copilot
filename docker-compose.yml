@@ -7,8 +7,6 @@ services:
       POSTGRES_DB: ai_engineering_copilot
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - "5437:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -26,8 +24,8 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       SERVER_PORT: 8080
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -35,11 +33,9 @@ services:
   frontend:
     build:
       context: ./frontend
-      args:
-        VITE_API_BASE_URL: http://localhost:8080
     container_name: ai-engineering-frontend
     ports:
-      - "5173:80"
+      - "3000:80"
     depends_on:
       - backend
 
